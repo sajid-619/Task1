@@ -13,7 +13,7 @@ RUN apt-get update && \
     docker-php-ext-install pdo pdo_pgsql
 
 # Expose port 80 to the outside world
-EXPOSE 8081
+EXPOSE 80
 
 # Start the PHP server to serve the application
-CMD ["php", "-S", "0.0.0.0:8081"]
+CMD ["php", "-S", "0.0.0.0:80"]

@@ -1,24 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app1-deployment
+  name: app1
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app: app1
-  replicas: 1
   template:
     metadata:
       labels:
         app: app1
     spec:
       containers:
-        - name: app1-container
-          image: l3r4639/app1:latest
-          ports:
-            - containerPort: 80
-          envFrom:
-            - configMapRef:
-                name: app1-configmap
-      nodeSelector:
-        app: app1
+      - name: app1
+        image: l3r4639/app1:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: APP_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: app1-config
+              key: APP_ENV
+        - name: APP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app1-config
+              key: APP_NAME
