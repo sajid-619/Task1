@@ -1,0 +1,38 @@
+pipeline {
+  agent {
+    docker {
+      image 'php:8.0-cli'
+      args '-v $HOME/.composer/cache:/root/.composer/cache'
+    }
+  }
+  
+  stages {
+    stage('Build') {
+      steps {
+        sh 'composer install'
+        sh 'php artisan config:cache'
+      }
+    }
+    stage('Test') {
+      steps {
+        sh './vendor/bin/phpunit'
+      }
+    }
+    stage('Dockerize') {
+      steps {
+        sh 'docker build -t l3r4639/app2 .'
+        withCredentials([string(credentialsId: 'dockerhub-creds', variable: 'DOCKERHUB_CREDS')]) {
+          sh 'docker login -u $l3r4639 -p $darknight22'
+        }
+        sh 'docker push l3r4639/app2'
+      }
+    }
+    stage('Deploy') {
+      steps {
+        sh 'kubectl apply -f app2/deploy/app2-deployment.yaml'
+        sh 'kubectl apply -f app2/deploy/app2-deployment.yaml'
+        sh 'kubectl apply -f app2/deploy/app2-service.yaml'
+      }
+    }
+  }
+}
