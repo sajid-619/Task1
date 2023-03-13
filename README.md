@@ -31,7 +31,9 @@ $ kubectl apply -f nginx/deploy/nginx-configmap.yaml
 $ kubectl get pods
 ```
 
-4. Create a Docker Compose file that runs a Jenkins container. Create two Jenkinsfiles, one for each app, that builds and deploys the apps into the Kubernetes cluster. The Jenkinsfiles should use the Docker images built by the Jenkins pipeline. Then run the following command:
+Also, don't forget to replace your-docker-id and image-name in app1.deployment.yaml and app2.deployment.yaml files
+
+4. Create a Docker Compose file that runs a Jenkins container. Create two Jenkinsfiles, one for each app, that builds and deploys the apps into the Kubernetes cluster. The Jenkinsfiles should use the Docker images built by the Jenkins pipeline. Don't forget to replace the <your-docker-id>, <image-name>, $DOCKERUSER and $DOCKERPASSWORD given in the Jenkinsfiles in app1 and app2 folders. Then run the following command:
 
 ```
 docker-compose up -d
